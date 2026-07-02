@@ -76,6 +76,8 @@
         "openingHours": "Mo-Fr 09:00-18:00"
     }
     </script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <!-- Header / Navigation -->
@@ -267,14 +269,9 @@
                                 <p class="contact-card__detail">30 km autour de Bagnères-de-Bigorre et Lourdes</p>
                             </div>
                         </div>
-                    
-                    <div class="contact__map">
-                        <div class="contact__map-placeholder">
-                            <i class="fas fa-map" aria-hidden="true"></i>
-                            <span>Carte d'intervention - Hautes-Pyrénées (65)</span>
-                            <p>Rayon de 30 km autour de Bagnères-de-Bigorre et Lourdes</p>
-                        </div>
                     </div>
+                    
+                    <div class="contact__map" id="map"></div>
                 </div>
             </div>
         </section>
@@ -324,7 +321,29 @@
         <i class="fas fa-chevron-up" aria-hidden="true"></i>
     </button>
 
-    <!-- Scripts -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([43.0833, -0.1000], 9);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            L.circle([43.0833, -0.1000], {
+                color: '#1e3a5f',
+                fillColor: '#1e3a5f',
+                fillOpacity: 0.15,
+                radius: 30000,
+                weight: 2
+            }).addTo(map).bindPopup("Zone d'intervention - 30 km");
+            L.marker([43.0833, -0.1000]).addTo(map)
+                .bindPopup("<b>Bagnères-de-Bigorre</b><br>Base d'intervention");
+            L.marker([43.1000, -0.0500]).addTo(map)
+                .bindPopup("<b>Lourdes</b><br>Zone d'intervention");
+        });
+    </script>
+
+        <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>
