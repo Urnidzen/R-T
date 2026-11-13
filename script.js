@@ -295,6 +295,66 @@
                 el.style.transition = 'none';
             });
         }
+
+        // ============================================
+        // FILTRES PORTFOLIO & LIGHTBOX
+        // ============================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const caseCards = document.querySelectorAll('.case-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                caseCards.forEach(card => {
+                    const categories = card.getAttribute('data-category') || '';
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.classList.remove('is-hidden');
+                    } else {
+                        card.classList.add('is-hidden');
+                    }
+                });
+            });
+        });
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        window.openLightbox = function(src, caption) {
+            if (!lightbox || !lightboxImg) return;
+            lightboxImg.src = src;
+            lightboxImg.alt = caption || '';
+            if (lightboxCaption) lightboxCaption.textContent = caption || '';
+            lightbox.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        function closeLightbox() {
+            if (!lightbox) return;
+            lightbox.classList.remove('is-open');
+            document.body.style.overflow = '';
+        }
+
+        if (lightboxClose) {
+            lightboxClose.addEventListener('click', closeLightbox);
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) {
+                closeLightbox();
+            }
+        });
         
         console.log('🎨 Portfolio Cédric Peyrat - Chargé avec succès');
     }
